@@ -1,0 +1,16 @@
+
+> ragbot@1.0.0 predev
+> node scripts/clean-next.mjs
+
+Removed stale .next directory before starting dev server.
+
+> ragbot@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.6s
+[?25h

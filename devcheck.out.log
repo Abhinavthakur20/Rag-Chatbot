@@ -1,0 +1,16 @@
+
+> ragbot@1.0.0 predev
+> node scripts/clean-next.mjs
+
+Skipped .next cleanup because a local dev server is already running.
+
+> ragbot@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3002
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+[?25h
