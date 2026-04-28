@@ -27,6 +27,7 @@ export default function HomePage() {
   const [negativePrompt, setNegativePrompt] = useState("");
   const [variations, setVariations] = useState(3);
   const [resetVersion, setResetVersion] = useState(0);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -87,10 +88,25 @@ export default function HomePage() {
     window.localStorage.removeItem("ragbot-chat-history-v2");
   }
 
+  useEffect(() => {
+    if (!isMobileSidebarOpen) {
+      return undefined;
+    }
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isMobileSidebarOpen]);
+
   return (
     <main className="min-h-screen bg-[var(--bg-secondary)] text-[var(--text-primary)]">
       <div className="flex min-h-screen">
         <Sidebar
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
           selections={selections}
           negativePrompt={negativePrompt}
           variations={variations}
@@ -106,6 +122,7 @@ export default function HomePage() {
           negativePrompt={negativePrompt}
           variations={variations}
           resetVersion={resetVersion}
+          onToggleSidebar={() => setIsMobileSidebarOpen((value) => !value)}
         />
       </div>
     </main>

@@ -10,7 +10,8 @@ export default function ChatInterface({
   selections = {},
   negativePrompt = "",
   variations = 3,
-  resetVersion = 0
+  resetVersion = 0,
+  onToggleSidebar
 }) {
   const starterMessages = useMemo(
     () => [
@@ -219,7 +220,11 @@ export default function ChatInterface({
 
   return (
     <div className="relative flex min-h-0 flex-1">
-      <div className={`flex min-w-0 flex-1 transition-all duration-300 ${isPanelOpen ? "pr-[300px]" : ""}`}>
+      <div
+        className={`flex min-w-0 flex-1 transition-all duration-300 ${
+          isPanelOpen ? "md:pr-[300px]" : ""
+        }`}
+      >
         <ChatArea
           title="RagBot Prompt Forge"
           messages={messages}
@@ -230,6 +235,7 @@ export default function ChatInterface({
           onSubmit={handleAsk}
           onGenerate={handleGenerate}
           onTogglePanel={() => setIsPanelOpen((value) => !value)}
+          onToggleSidebar={onToggleSidebar}
           onCopyMessage={copyText}
           onUsePrompt={usePromptInChat}
         />

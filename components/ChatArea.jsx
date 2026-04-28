@@ -14,6 +14,7 @@ export default function ChatArea({
   onSubmit,
   onGenerate,
   onTogglePanel,
+  onToggleSidebar,
   onCopyMessage,
   onUsePrompt
 }) {
@@ -21,9 +22,13 @@ export default function ChatArea({
 
   return (
     <section className="relative flex h-screen min-w-0 flex-1 flex-col overflow-hidden bg-[var(--bg-secondary)]">
-      <Navbar title={title || "RagBot Prompt Forge"} onTogglePanel={onTogglePanel} />
+      <Navbar
+        title={title || "RagBot Prompt Forge"}
+        onTogglePanel={onTogglePanel}
+        onToggleSidebar={onToggleSidebar}
+      />
 
-      <div className="flex-1 overflow-y-auto px-4 pb-[132px] pt-8">
+      <div className="flex-1 overflow-y-auto px-3 pb-[132px] pt-6 sm:px-4 sm:pt-8">
         <div className="mx-auto flex w-full max-w-[680px] flex-col gap-6">
           {showEmpty ? <EmptyState /> : null}
 

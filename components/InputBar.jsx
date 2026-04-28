@@ -29,7 +29,7 @@ export default function InputBar({
   }
 
   return (
-    <div className="border-t border-[var(--border)] bg-[var(--bg-secondary)] px-4 pb-5 pt-3">
+    <div className="border-t border-[var(--border)] bg-[var(--bg-secondary)] px-3 pb-4 pt-3 sm:px-4 sm:pb-5">
       <div className="relative mx-auto max-w-[680px]">
         <textarea
           ref={textareaRef}
@@ -57,7 +57,7 @@ export default function InputBar({
         </button>
       </div>
 
-      <div className="mt-2 text-center text-[11px] text-[var(--text-muted)]">
+      <div className="mt-2 px-2 text-center text-[10px] text-[var(--text-muted)] sm:text-[11px]">
         RagBot can make mistakes. Verify important prompts.
       </div>
     </div>
