@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   aspectRatios,
   characters,
@@ -142,20 +143,13 @@ export default function Sidebar({
             placeholder="Select Quality"
           />
 
-          <label className="relative block">
-            <span className="mb-[3px] block text-[10px] uppercase tracking-[0.06em] text-[var(--text-muted)]">
-              Variations
-            </span>
-            <select
-              value={String(variations)}
-              onChange={(event) => onUpdateVariations(Number(event.target.value))}
-              className="select-chevron h-[34px] w-full appearance-none rounded-lg border border-[var(--border)] bg-[var(--bg-tertiary)] px-2.5 text-xs text-[var(--text-primary)] transition-[border-color] duration-150 ease-in hover:border-[var(--border-hover)] focus:border-[var(--border-hover)]"
-            >
-              <option value="1">1</option>
-              <option value="3">3</option>
-              <option value="5">5</option>
-            </select>
-          </label>
+          <SelectField
+            label="Variations"
+            value={String(variations)}
+            onChange={(value) => onUpdateVariations(Number(value))}
+            options={["1", "3", "5"]}
+            placeholder="Select Variations"
+          />
 
           <label className="relative block">
             <span className="mb-[3px] block text-[10px] uppercase tracking-[0.06em] text-[var(--text-muted)]">
@@ -190,18 +184,104 @@ function SelectField({ label, value, onChange, options, placeholder }) {
       <span className="mb-[3px] block text-[10px] uppercase tracking-[0.06em] text-[var(--text-muted)]">
         {label}
       </span>
-      <select
+      <CustomSelect
         value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="select-chevron h-[34px] w-full appearance-none rounded-lg border border-[var(--border)] bg-[var(--bg-tertiary)] px-2.5 text-xs text-[var(--text-primary)] transition-[border-color] duration-150 ease-in hover:border-[var(--border-hover)] focus:border-[var(--border-hover)]"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+        onChange={onChange}
+        options={options}
+        placeholder={placeholder}
+      />
     </label>
+  );
+}
+
+function CustomSelect({ value, onChange, options, placeholder }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!containerRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedLabel = value || placeholder;
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setIsOpen((open) => !open)}
+        className={`flex h-[34px] w-full items-center justify-between rounded-lg border bg-[var(--bg-tertiary)] px-2.5 text-left text-xs transition-[border-color,box-shadow] duration-150 ease-in ${
+          isOpen
+            ? "border-[var(--accent)] shadow-[0_0_0_2px_rgba(201,100,66,0.15)]"
+            : "border-[var(--border)] hover:border-[var(--border-hover)]"
+        }`}
+      >
+        <span className={value ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"}>
+          {selectedLabel}
+        </span>
+        <svg
+          viewBox="0 0 24 24"
+          className={`h-4 w-4 text-[var(--text-secondary)] transition-transform duration-150 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 9l6 6 6-6"
+          />
+        </svg>
+      </button>
+
+      {isOpen ? (
+        <div className="absolute left-0 right-0 z-50 mt-1 overflow-hidden rounded-lg border border-[var(--border-hover)] bg-[var(--bg-tertiary)] shadow-lg">
+          <button
+            type="button"
+            onClick={() => {
+              onChange("");
+              setIsOpen(false);
+            }}
+            className={`block w-full px-2.5 py-2 text-left text-xs transition-colors ${
+              !value
+                ? "bg-[rgba(201,100,66,0.15)] text-[var(--accent)]"
+                : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+            }`}
+          >
+            {placeholder}
+          </button>
+          <div className="max-h-52 overflow-y-auto py-1">
+            {options.map((option) => {
+              const isSelected = String(value) === String(option);
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    onChange(option);
+                    setIsOpen(false);
+                  }}
+                  className={`block w-full px-2.5 py-2 text-left text-xs transition-colors ${
+                    isSelected
+                      ? "bg-[rgba(201,100,66,0.15)] text-[var(--accent)]"
+                      : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
