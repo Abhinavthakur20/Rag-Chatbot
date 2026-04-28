@@ -1,0 +1,78 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the rounded rectangle border -->
+    <linearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5B4FFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6B3FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4B7F;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for arrow -->
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#5B4FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4B7F;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for sparkles -->
+    <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B9D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4B7F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Right rounded rectangle with gradient border -->
+  <rect x="240" y="110" width="240" height="290" rx="40" fill="none" stroke="url(#borderGradient)" stroke-width="12"/>
+  
+  <!-- Left image icon with sketch style -->
+  <g>
+    <!-- Outer rectangle for image icon -->
+    <rect x="60" y="140" width="130" height="160" rx="15" fill="none" stroke="#384558" stroke-width="8"/>
+    
+    <!-- Diagonal lines (hatching) inside -->
+    <line x1="80" y1="160" x2="110" y2="190" stroke="#384558" stroke-width="4" stroke-linecap="round"/>
+    <line x1="95" y1="160" x2="125" y2="190" stroke="#384558" stroke-width="4" stroke-linecap="round"/>
+    <line x1="110" y1="160" x2="140" y2="190" stroke="#384558" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Circle (sun) -->
+    <circle cx="95" cy="170" r="18" fill="none" stroke="#384558" stroke-width="6"/>
+    
+    <!-- Mountain peaks -->
+    <polygon points="75,260 110,200 145,240 180,200 195,260" fill="none" stroke="#384558" stroke-width="6" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Decorative lines next to image icon -->
+  <g stroke="#384558" stroke-width="5" stroke-linecap="round">
+    <line x1="105" y1="125" x2="145" y2="115"/>
+    <line x1="110" y1="110" x2="155" y2="95"/>
+  </g>
+  
+  <!-- Center arrow -->
+  <g>
+    <!-- Arrow shaft -->
+    <rect x="200" y="235" width="60" height="14" rx="7" fill="url(#arrowGradient)"/>
+    
+    <!-- Arrow head circles -->
+    <circle cx="215" cy="235" r="6" fill="url(#arrowGradient)"/>
+    <circle cx="215" cy="249" r="6" fill="url(#arrowGradient)"/>
+    
+    <!-- Arrow point -->
+    <polygon points="270,242 295,230 295,254" fill="url(#arrowGradient)"/>
+  </g>
+  
+  <!-- Sparkles on right card -->
+  <g fill="url(#sparkleGradient)">
+    <!-- Large sparkle -->
+    <polygon points="330,160 345,185 370,200 345,215 330,240 315,215 290,200 315,185"/>
+    
+    <!-- Small sparkle -->
+    <polygon points="395,140 405,157 425,167 405,177 395,194 385,177 365,167 385,157"/>
+  </g>
+  
+  <!-- Text lines on right card -->
+  <g fill="url(#arrowGradient)">
+    <rect x="285" y="280" width="120" height="12" rx="6"/>
+    <rect x="285" y="305" width="120" height="12" rx="6"/>
+    <rect x="285" y="330" width="100" height="12" rx="6"/>
+    <rect x="285" y="355" width="120" height="12" rx="6"/>
+  </g>
+</svg>

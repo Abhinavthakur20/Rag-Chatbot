@@ -3,9 +3,12 @@
 export default function Navbar({ title = "RagBot Prompt Forge", onTogglePanel }) {
   return (
     <header className="h-[52px] border-b border-[var(--border)] px-5">
-      <div className="grid h-full grid-cols-[1fr_auto_1fr] items-center">
-        <div />
-        <div className="text-sm font-normal text-[var(--text-secondary)]">{title}</div>
+      <div className="grid h-full grid-cols-[auto_1fr_auto] items-center gap-4">
+        <div className="flex items-center gap-2">
+          <img src="/logo.svg" alt="RagBot Logo" className="h-8 w-8" />
+          <span className="text-sm font-semibold text-[var(--text)]">RagBot</span>
+        </div>
+        <div className="text-sm font-normal text-[var(--text-secondary)] text-center">{title}</div>
         <div className="flex justify-end">
           <button
             type="button"
