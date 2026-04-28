@@ -69,7 +69,10 @@ export async function POST(request) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: error.message || "Prompt generation failed."
+        error:
+          error.message?.includes("public.documents")
+            ? "Supabase table `documents` is missing. Run the SQL setup from README, or keep using built-in fallback knowledge."
+            : error.message || "Prompt generation failed."
       },
       { status: 500 }
     );

@@ -1,7 +1,7 @@
 import { buildChatPrompt, buildRetrievalQuery } from "@/lib/promptBuilder";
 import { generateTextStream } from "@/lib/grok";
 import { retrieveRelevantContext, serializeContext } from "@/lib/rag";
-import { CHAT_SYSTEM_PROMPT, MASTER_SYSTEM_PROMPT } from "@/lib/systemPrompts";
+import { MASTER_SYSTEM_PROMPT } from "@/lib/systemPrompts";
 
 export const runtime = "nodejs";
 
@@ -83,6 +83,9 @@ every prompt unless user specifies otherwise.
       }
     });
   } catch (error) {
-    return new Response(error.message || "Chat request failed.", { status: 500 });
+    const message = error.message?.includes("public.documents")
+      ? "Supabase table `documents` is missing. Run the SQL setup from README, or keep using built-in fallback knowledge."
+      : error.message || "Chat request failed.";
+    return new Response(message, { status: 500 });
   }
 }

@@ -8,20 +8,21 @@
     "prebuild": "node scripts/clean-next.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "tsx scripts/seed.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "next": "^14.2.0",
+    "@supabase/supabase-js": "^2.105.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vectra": "^0.11.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0"
   }
 }
