@@ -21,7 +21,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     }
 });
 
-function getVersion() {
+async function getVersion() {
     const { createHash } = await import("crypto");
     return createHash("sha1")
         .update(JSON.stringify(knowledgeDocuments))
