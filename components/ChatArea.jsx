@@ -23,14 +23,18 @@ export default function ChatArea({
 
   return (
     <section className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[var(--bg-secondary)]">
-      <Navbar
-        title={title || "RagBot Prompt Forge"}
-        onTogglePanel={onTogglePanel}
-        onToggleSidebar={onToggleSidebar}
-      />
+      {/* Fixed Header */}
+      <div className="flex-none bg-[var(--bg-secondary)]/80 backdrop-blur-md">
+        <Navbar
+          title={title || "Vivid Prompt Forge"}
+          onTogglePanel={onTogglePanel}
+          onToggleSidebar={onToggleSidebar}
+        />
+      </div>
 
-      <div className="flex-1 overflow-y-auto px-3 pb-[132px] pt-6 sm:px-4 sm:pt-8">
-        <div className="mx-auto flex w-full max-w-[680px] flex-col gap-6">
+      {/* Scrollable Chat Area */}
+      <div className="flex-1 overflow-y-auto px-3 pt-6 sm:px-4 sm:pt-8 no-scrollbar">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col gap-6 pb-8">
           {showEmpty ? <EmptyState /> : null}
 
           {messages
@@ -52,7 +56,8 @@ export default function ChatArea({
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-10">
+      {/* Fixed Input Area */}
+      <div className="flex-none border-t border-[var(--border)] bg-[var(--bg-secondary)]">
         <InputBar
           value={input}
           onChange={onInputChange}
