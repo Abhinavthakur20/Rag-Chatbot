@@ -17,8 +17,8 @@ export default function RightPanel({
 
   return (
     <aside
-      className={`fixed right-0 top-0 z-30 h-screen overflow-hidden border-l border-[var(--border)] bg-[var(--bg-primary)] transition-[width,opacity] duration-300 ease-in ${
-        isOpen ? "w-[300px] opacity-100" : "w-0 opacity-0"
+      className={`fixed right-0 top-0 z-50 h-full overflow-hidden border-l border-[var(--border)] bg-[var(--bg-primary)] transition-all duration-300 ease-in ${
+        isOpen ? "w-full sm:w-[300px] opacity-100" : "w-0 opacity-0"
       }`}
     >
       <div className="flex h-[52px] items-center justify-between border-b border-[var(--border)] px-4">

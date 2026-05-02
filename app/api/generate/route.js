@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateText } from "@/lib/grok";
-import { GENERATION_SYSTEM_PROMPT } from "@/lib/systemPrompts";
+import { GENERATION_SYSTEM_PROMPT, PRODUCT_SYSTEM_PROMPT } from "@/lib/systemPrompts";
 import { buildGenerationPrompt, buildRetrievalQuery, parseGenerationResponse } from "@/lib/promptBuilder";
 import { retrieveRelevantContext, serializeContext } from "@/lib/rag";
 
@@ -13,22 +13,35 @@ export async function POST(request) {
       selections = {},
       roughPrompt = "",
       negativePrompt = "",
-      variations = 1
+      variations = 1,
+      mode = "companionship"
     } = body || {};
 
-    const hasMeaningfulSelection = [
-      selections.contentType,
-      selections.mood,
-      selections.character,
-      selections.environment,
-      selections.tool,
-      selections.style,
-      selections.aspectRatio,
-      selections.quality,
-      selections.characterDetails?.hairColor,
-      selections.characterDetails?.ageRange,
-      selections.characterDetails?.expression
-    ].some((value) => Boolean(String(value || "").trim()));
+    const isProduct = mode === "product";
+
+    const hasMeaningfulSelection = isProduct
+      ? [
+          selections.productCategory,
+          selections.shotType,
+          selections.mood,
+          selections.environment,
+          selections.lighting,
+          selections.tool,
+          selections.aspectRatio
+        ].some((value) => Boolean(String(value || "").trim()))
+      : [
+          selections.contentType,
+          selections.mood,
+          selections.character,
+          selections.environment,
+          selections.tool,
+          selections.style,
+          selections.aspectRatio,
+          selections.quality,
+          selections.characterDetails?.hairColor,
+          selections.characterDetails?.ageRange,
+          selections.characterDetails?.expression
+        ].some((value) => Boolean(String(value || "").trim()));
 
     if (!roughPrompt.trim() && !hasMeaningfulSelection) {
       return NextResponse.json(
@@ -42,7 +55,8 @@ export async function POST(request) {
     const query = buildRetrievalQuery({
       selections,
       roughPrompt,
-      negativePrompt
+      negativePrompt,
+      mode
     });
 
     const contextItems = await retrieveRelevantContext(query, 5);
@@ -52,12 +66,15 @@ export async function POST(request) {
       selections,
       roughPrompt,
       negativePrompt,
-      variations
+      variations,
+      mode
     });
+
+    const systemInstruction = isProduct ? PRODUCT_SYSTEM_PROMPT : GENERATION_SYSTEM_PROMPT;
 
     const text = await generateText({
       prompt,
-      systemInstruction: GENERATION_SYSTEM_PROMPT
+      systemInstruction
     });
 
     const prompts = parseGenerationResponse(text, Number(variations) || 1);

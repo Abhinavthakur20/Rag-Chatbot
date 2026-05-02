@@ -22,8 +22,11 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 function getVersion() {
-    // Keep version string simple for seed script idempotency checks.
-    return process.env.RAG_KNOWLEDGE_VERSION || "v1";
+    const { createHash } = await import("crypto");
+    return createHash("sha1")
+        .update(JSON.stringify(knowledgeDocuments))
+        .digest("hex")
+        .slice(0, 12);
 }
 
 async function alreadyExists(sourceId, version) {
@@ -63,7 +66,7 @@ async function storeDocument(doc, version) {
 }
 
 async function seed() {
-    const version = getVersion();
+    const version = await getVersion();
     console.log("Seeding knowledge base into Supabase...");
 
     let inserted = 0;

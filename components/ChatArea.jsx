@@ -16,12 +16,13 @@ export default function ChatArea({
   onTogglePanel,
   onToggleSidebar,
   onCopyMessage,
-  onUsePrompt
+  onUsePrompt,
+  mode = "companionship"
 }) {
   const showEmpty = messages.length <= 1;
 
   return (
-    <section className="relative flex h-screen min-w-0 flex-1 flex-col overflow-hidden bg-[var(--bg-secondary)]">
+    <section className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[var(--bg-secondary)]">
       <Navbar
         title={title || "RagBot Prompt Forge"}
         onTogglePanel={onTogglePanel}
@@ -57,6 +58,7 @@ export default function ChatArea({
           onChange={onInputChange}
           onSubmit={onSubmit}
           disabled={isGenerating || isStreaming}
+          mode={mode}
         />
       </div>
     </section>

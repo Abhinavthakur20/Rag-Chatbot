@@ -4,14 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 import ChatArea from "@/components/ChatArea";
 import RightPanel from "@/components/RightPanel";
 
-const STORAGE_KEY = "ragbot-chat-history-v2";
+const DEFAULT_STORAGE_KEY = "ragbot-chat-history-v2";
 
 export default function ChatInterface({
   selections = {},
   negativePrompt = "",
   variations = 3,
   resetVersion = 0,
-  onToggleSidebar
+  onToggleSidebar,
+  apiEndpoint = "/api/chat",
+  title = "RagBot Prompt Forge",
+  storageKey = DEFAULT_STORAGE_KEY,
+  mode = "companionship"
 }) {
   const starterMessages = useMemo(
     () => [
@@ -36,7 +40,7 @@ export default function ChatInterface({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
+    const saved = window.localStorage.getItem(storageKey);
 
     if (saved) {
       try {
@@ -48,7 +52,8 @@ export default function ChatInterface({
         console.error("Failed to restore chat history", storageError);
       }
     }
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey]);
 
   useEffect(() => {
     setMessages(starterMessages);
@@ -59,8 +64,8 @@ export default function ChatInterface({
   }, [resetVersion, starterMessages]);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-  }, [messages]);
+    window.localStorage.setItem(storageKey, JSON.stringify(messages));
+  }, [messages, storageKey]);
 
   useEffect(() => {
     const promptMessages = messages.filter((message) => message.kind === "prompts");
@@ -78,7 +83,7 @@ export default function ChatInterface({
     const roughPrompt = input.trim();
     const fallbackRequest = "Generate prompt options using the current selections.";
 
-    if (!roughPrompt && !hasSelection(selections)) {
+    if (!roughPrompt && !hasSelection(selections, mode)) {
       setError("Add a quick idea or choose at least one control before generating.");
       return;
     }
@@ -105,7 +110,8 @@ export default function ChatInterface({
           selections,
           roughPrompt,
           negativePrompt,
-          variations
+          variations,
+          mode
         })
       });
 
@@ -156,7 +162,7 @@ export default function ChatInterface({
     setIsStreaming(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -164,7 +170,8 @@ export default function ChatInterface({
         body: JSON.stringify({
           messages: serializeMessages(nextMessages),
           currentPrompt: promptContext,
-          selections
+          selections,
+          mode
         })
       });
 
@@ -226,7 +233,7 @@ export default function ChatInterface({
         }`}
       >
         <ChatArea
-          title="RagBot Prompt Forge"
+          title={title}
           messages={messages}
           input={input}
           isGenerating={isGenerating}
@@ -238,6 +245,7 @@ export default function ChatInterface({
           onToggleSidebar={onToggleSidebar}
           onCopyMessage={copyText}
           onUsePrompt={usePromptInChat}
+          mode={mode}
         />
       </div>
 
@@ -278,7 +286,18 @@ function serializeMessages(messages) {
   });
 }
 
-function hasSelection(selections) {
+function hasSelection(selections, mode = "companionship") {
+  if (mode === "product") {
+    return [
+      selections.productCategory,
+      selections.shotType,
+      selections.mood,
+      selections.environment,
+      selections.lighting,
+      selections.tool
+    ].some(Boolean);
+  }
+
   return [
     selections.contentType,
     selections.mood,

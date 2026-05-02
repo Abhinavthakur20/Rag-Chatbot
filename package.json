@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx scripts/seed.js"
+    "seed": "tsx --env-file=.env scripts/seed.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -7,7 +7,7 @@ const bodyFont = Inter({
 });
 
 export const metadata = {
-  title: "RagBot Prompt Forge",
+  title: "Vivid Prompt Forge",
   description:
     "AI prompt generator and RAG chatbot for companionship app creative workflows.",
   icons: {
